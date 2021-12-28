@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import Text from './Text';
+import * as Linking from 'expo-linking';
+
 const styles = StyleSheet.create({
   container: {
     padding: 10,
@@ -18,7 +20,8 @@ const styles = StyleSheet.create({
   },
   details: {
     flexDirection: 'column',
-    paddingLeft: 10
+    paddingLeft: 10,
+    paddingRight: 10
   },
   languageStyle: {
     paddingHorizontal: 4,
@@ -42,6 +45,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     
   },
+  button: {
+    backgroundColor: '#b00000',
+    color: 'white',
+    textAlign: 'center',
+    padding: 10,
+    margin: 10
+}
 
 });
  
@@ -54,7 +64,7 @@ const Count = ({ label, count }) => {
   
   return (
     <View style={styles.numbersDetails}>
-      <Text fontWeight="bold" style={{ textAlign: 'center' }}>{newCount} </Text>
+      <Text testID="countedNumber" fontWeight="bold" style={{ textAlign: 'center' }}>{newCount} </Text>
       <Text color="textSecondary" style={{ textAlign: 'center' }}>{label}</Text>
     </View>
   );
@@ -70,10 +80,10 @@ const RepositoryItem = ({ item }) => (
           }}
         />
       <View style={styles.details}>
-        <Text fontWeight="bold">{item.fullName}</Text>
-        <Text color="textSecondary">{item.description}</Text>
+        <Text testID="repoTitle" fontWeight="bold">{item.fullName}</Text>
+        <Text testID="repoDescription" color="textSecondary">{item.description}</Text>
         <View style={styles.languageStyle}>
-          <Text style={styles.languangeText}>{item.language}</Text>
+          <Text testID="repoLanguage" style={styles.languangeText}>{item.language}</Text>
         </View>
       </View>
     </View>
@@ -83,6 +93,12 @@ const RepositoryItem = ({ item }) => (
       <Count label='Reviews' count={item.reviewCount}></Count>
       <Count label='Rating' count={item.ratingAverage}></Count>
     </View>
+    {item.url ? 
+      <Pressable  onPress={() => {Linking.openURL(item.url);}}>
+        <Text style={styles.button} fontWeight="bold" fontSize="subheading">Open in Github</Text>
+      </Pressable> :
+      null
+    }
   </View>
 );
 
